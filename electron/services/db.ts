@@ -5,6 +5,13 @@ type DbInstance = InstanceType<typeof Database>
 
 let database: DbInstance | null = null
 
+export function resetDb() {
+  if (database) {
+    database.close()
+    database = null
+  }
+}
+
 export function getDb(): DbInstance {
   if (database) {
     return database

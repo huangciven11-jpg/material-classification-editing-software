@@ -1,8 +1,17 @@
-import { describe, expect, it } from 'vitest'
-import { createAssetLibraryService } from '../../electron/services/asset-library-service'
+import path from 'node:path'
+import os from 'node:os'
+import { describe, expect, it, beforeEach } from 'vitest'
+
+beforeEach(async () => {
+  const tempDir = path.join(os.tmpdir(), `material-editor-test-${Date.now()}-${Math.random()}`)
+  process.env.MATERIAL_EDITOR_DB_PATH = path.join(tempDir, 'material-editor.db')
+  const dbModule = await import('../../electron/services/db')
+  dbModule.resetDb()
+})
 
 describe('asset-library-service', () => {
-  it('applies suggested tags into content tags and deduplicates them', () => {
+  it('applies suggested tags into content tags and deduplicates them', async () => {
+    const { createAssetLibraryService } = await import('../../electron/services/asset-library-service')
     const service = createAssetLibraryService()
     service.seedDemoAssets()
     const asset = service.listAssets()[0]
@@ -15,7 +24,8 @@ describe('asset-library-service', () => {
     expect(updated?.contentTags.filter(tag => tag === '新标签')).toHaveLength(1)
   })
 
-  it('returns failure when asset does not exist', () => {
+  it('returns failure when asset does not exist', async () => {
+    const { createAssetLibraryService } = await import('../../electron/services/asset-library-service')
     const service = createAssetLibraryService()
     const result = service.applySuggestedTags('missing-asset', ['标签'])
 
