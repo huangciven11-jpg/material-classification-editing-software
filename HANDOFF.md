@@ -24,8 +24,9 @@
 
 ## Current Goal
 - Continue improving the desktop software in this folder.
-- Focus on actual code changes, verification, and packaging.
+- Focus on real code changes, verification, and packaging.
 - Prefer direct execution over repeated confirmation prompts.
+- Use your own best recommendation for the next highest-value task, then continue from there without waiting.
 
 ## Restart Instructions
 When Claude is restarted, resume with this exact context:
@@ -34,6 +35,7 @@ When Claude is restarted, resume with this exact context:
 2. The current packaged app is `release\win-unpacked\素材分类剪辑软件.exe`.
 3. Continue improving this software instead of re-discovering the project.
 4. Inspect current code, run or verify relevant commands, then keep implementing.
+5. After finishing one task, immediately choose the next best task and continue.
 
 ## Suggested First Checks After Restart
 - Open `package.json`
