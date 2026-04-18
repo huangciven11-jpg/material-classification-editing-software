@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowSyntheticDefaultImports": true,
+    "types": ["node", "better-sqlite3"],
+    "rootDir": ".",
+    "outDir": "dist-electron"
+  },
+  "include": ["vite.config.ts", "electron/**/*.ts", "src/shared/types/**/*.ts"]
+}

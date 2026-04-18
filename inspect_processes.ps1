@@ -1,0 +1,1 @@
+Get-Process | Where-Object { $_.ProcessName -like 'electron*' -or $_.ProcessName -like '素材分类剪辑软件*' } | Select-Object Id, ProcessName, Path | Format-List

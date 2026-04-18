@@ -1,0 +1,70 @@
+{
+  "name": "material-classification-editing-software",
+  "private": true,
+  "version": "0.1.0",
+  "description": "面向电商素材入库、分类、粗剪与导出的桌面端素材分类剪辑软件。",
+  "author": "lujun",
+  "type": "module",
+  "main": "dist-electron/electron/main.js",
+  "scripts": {
+    "dev": "concurrently -k \"npm:dev:renderer\" \"npm:dev:electron\"",
+    "dev:renderer": "vite --host 127.0.0.1 --port 5179 --strictPort",
+    "dev:electron": "wait-on http://127.0.0.1:5179 && npm run build:electron && electron .",
+    "dev:electron:debug": "wait-on http://127.0.0.1:5179 && npm run build:electron && powershell -ExecutionPolicy Bypass -File ./run_electron_debug.ps1",
+    "build": "tsc -b && vite build",
+    "build:electron": "powershell -Command \"if (Test-Path 'dist-electron') { Remove-Item 'dist-electron' -Recurse -Force }\" && tsc -p tsconfig.node.json && powershell -Command \"Copy-Item 'electron\\preload.cjs' 'dist-electron\\electron\\preload.cjs' -Force\"",
+    "dist": "npm run build && npm run build:electron && electron-builder --win dir",
+    "release:unlock": "powershell -ExecutionPolicy Bypass -File ./clean_release_lock.ps1",
+    "dist:fresh": "npm run release:unlock && powershell -Command \"if (Test-Path 'release\\win-unpacked') { Remove-Item 'release\\win-unpacked' -Recurse -Force }\" && npm run dist",
+    "lint": "eslint src electron --ext .ts,.tsx",
+    "test": "vitest run"
+  },
+  "build": {
+    "appId": "com.material.editor.desktop",
+    "productName": "素材分类剪辑软件",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        "dir"
+      ],
+      "signAndEditExecutable": false
+    }
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.9.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/screenshot-desktop": "^1.15.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^9.2.1",
+    "electron": "^41.2.1",
+    "electron-builder": "^26.8.1",
+    "eslint": "^10.2.0",
+    "globals": "^17.5.0",
+    "happy-dom": "^20.9.0",
+    "jsdom": "^29.0.2",
+    "screenshot-desktop": "^1.15.3",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.2",
+    "vite": "^8.0.8",
+    "vitest": "^4.1.4",
+    "wait-on": "^9.0.5"
+  }
+}

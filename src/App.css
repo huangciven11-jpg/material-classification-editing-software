@@ -1,0 +1,275 @@
+:root {
+  font-family: Inter, "Microsoft YaHei", sans-serif;
+  color: #eef3ff;
+  background: #0b1120;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #0b1120;
+}
+
+button,
+textarea,
+input {
+  font: inherit;
+}
+
+button {
+  border: none;
+  border-radius: 14px;
+  padding: 10px 14px;
+  background: #4f46e5;
+  color: #fff;
+  cursor: pointer;
+}
+
+textarea,
+input {
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: #111827;
+  color: #eef3ff;
+  padding: 14px;
+}
+
+textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 320px;
+  min-height: 100vh;
+}
+
+.sidebar {
+  padding: 20px;
+  border-right: 1px solid rgba(148, 163, 184, 0.15);
+  background: #0f172a;
+}
+
+.sidebar h1 {
+  margin: 0 0 24px;
+  font-size: 20px;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar nav button {
+  background: rgba(30, 41, 59, 0.9);
+  text-align: left;
+}
+
+.sidebar nav button.active {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+}
+
+.workspace,
+.detail-panel {
+  padding: 20px;
+}
+
+.panel {
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 24px;
+  background: rgba(15, 23, 42, 0.9);
+  padding: 20px;
+}
+
+.panel-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.secondary-panel {
+  min-height: 100%;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.two-column-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
+  gap: 16px;
+}
+
+.material-grid,
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.material-card,
+.segment-card,
+.task-card,
+.setting-card {
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  background: rgba(30, 41, 59, 0.75);
+  padding: 14px;
+}
+
+.material-card.selected {
+  border-color: rgba(129, 140, 248, 0.65);
+}
+
+.thumb {
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  background: #1e293b;
+  display: grid;
+  place-items: center;
+  margin-bottom: 10px;
+  color: #cbd5e1;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.tag-row span {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(79, 70, 229, 0.18);
+  color: #c7d2fe;
+  font-size: 12px;
+}
+
+.segment-list,
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.segment-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.progress {
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(148, 163, 184, 0.15);
+  margin-top: 10px;
+}
+
+.progress div {
+  height: 100%;
+  background: linear-gradient(90deg, #4f46e5, #22d3ee);
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.suggestion-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.suggestion-list {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.suggestion-list li {
+  color: #dbeafe;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.field-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-block span {
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.detail-panel {
+  border-left: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.sticky-panel {
+  position: sticky;
+  top: 20px;
+}
+
+.task-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.task-status-badge.queued {
+  background: rgba(148, 163, 184, 0.18);
+  color: #cbd5e1;
+}
+
+.task-status-badge.running {
+  background: rgba(59, 130, 246, 0.18);
+  color: #93c5fd;
+}
+
+.task-status-badge.done {
+  background: rgba(34, 197, 94, 0.18);
+  color: #86efac;
+}
+
+.selected {
+  border-color: rgba(34, 211, 238, 0.7);
+}

@@ -1,0 +1,2 @@
+Get-Process | Where-Object { $_.ProcessName -like 'electron*' } | ForEach-Object { Stop-Process -Id $_.Id -Force }
+Get-Process | Where-Object { $_.ProcessName -like 'electron*' } | Select-Object Id, ProcessName, Path | Format-List
