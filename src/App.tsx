@@ -90,6 +90,7 @@ export default function App() {
   const [lastGenerationSummary, setLastGenerationSummary] = useState('')
   const [finalVideoPath, setFinalVideoPath] = useState('')
   const [finalVideoDetail, setFinalVideoDetail] = useState('')
+  const [recentAddedTagsByAsset, setRecentAddedTagsByAsset] = useState<Record<string, string[]>>({})
   const selectedAsset = useMemo(() => assets[0] ?? null, [assets])
 
   async function refreshLibraryAndTasks() {
@@ -153,13 +154,20 @@ export default function App() {
     setFinalVideoDetail(detail)
   }
 
+  function handleTagsApplied(assetId: string, addedTags: string[]) {
+    setRecentAddedTagsByAsset(previous => ({
+      ...previous,
+      [assetId]: addedTags,
+    }))
+  }
+
   return (
     <main className="app-shell">
       <NavigationShell activeTab={activeTab} onChange={setActiveTab} />
 
       <section className="workspace">
-        {activeTab === 'library' ? <LibraryPage assets={assets} onImportComplete={handleImportComplete} lastImportSummary={lastImportSummary} /> : null}
-        {activeTab === 'generate' ? <GeneratePage script={script} assets={assets} onScriptChange={setScript} onGenerationComplete={handleGenerationComplete} onAssetsChanged={refreshLibraryAndTasks} /> : null}
+        {activeTab === 'library' ? <LibraryPage assets={assets} recentAddedTagsByAsset={recentAddedTagsByAsset} onImportComplete={handleImportComplete} lastImportSummary={lastImportSummary} /> : null}
+        {activeTab === 'generate' ? <GeneratePage script={script} assets={assets} onScriptChange={setScript} onGenerationComplete={handleGenerationComplete} onAssetsChanged={refreshLibraryAndTasks} onTagsApplied={handleTagsApplied} /> : null}
         {activeTab === 'version' ? <VersionPage clips={timeline} assets={assets} script={script} onReplaceClip={handleReplaceClip} lastGenerationSummary={lastGenerationSummary} onExportComplete={handleExportComplete} finalVideoPath={finalVideoPath} finalVideoDetail={finalVideoDetail} /> : null}
         {activeTab === 'tasks' ? <TasksPage tasks={tasks} /> : null}
         {activeTab === 'settings' ? <SettingsPage /> : null}

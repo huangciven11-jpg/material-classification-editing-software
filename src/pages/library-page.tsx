@@ -12,10 +12,12 @@ const categoryLabelMap: Record<AssetCategory, string> = {
 
 export function LibraryPage({
   assets,
+  recentAddedTagsByAsset = {},
   onImportComplete,
   lastImportSummary,
 }: {
   assets: AssetRecord[]
+  recentAddedTagsByAsset?: Record<string, string[]>
   onImportComplete?: (pickedPathsCount: number) => Promise<void> | void
   lastImportSummary?: string
 }) {
@@ -34,13 +36,14 @@ export function LibraryPage({
         ...asset.visualTags,
         ...asset.styleTags,
         ...asset.usageTags,
+        ...(recentAddedTagsByAsset[asset.id] ?? []),
       ]
         .join(' ')
         .toLowerCase()
         .includes(searchText.trim().toLowerCase())
       return categoryOk && searchOk
     })
-  }, [assets, categoryFilter, searchText])
+  }, [assets, categoryFilter, searchText, recentAddedTagsByAsset])
 
   const selectedAsset = useMemo(() => visibleAssets.find(asset => asset.id === selectedId) ?? visibleAssets[0] ?? null, [visibleAssets, selectedId])
   const summary = useMemo(() => ({
@@ -111,11 +114,14 @@ export function LibraryPage({
         <p>{lastImportSummary || '导入完成后，这里会显示本次导入分类摘要。'}</p>
       </div>
       <div className="two-column-layout">
-        <MaterialGrid assets={visibleAssets} selectedId={selectedId} onSelect={asset => setSelectedId(asset.id)} />
+        <MaterialGrid assets={visibleAssets} recentAddedTagsByAsset={recentAddedTagsByAsset} selectedId={selectedId} onSelect={asset => setSelectedId(asset.id)} />
         <div className="panel secondary-panel">
           <MaterialDetailPanel asset={selectedAsset} />
           {selectedAsset ? <p>主分类：{categoryLabelMap[selectedAsset.category]}</p> : null}
           {selectedAsset ? <p>分类置信度：{selectedAsset.categoryConfidence ?? 'low'}</p> : null}
+          {selectedAsset && recentAddedTagsByAsset[selectedAsset.id]?.length ? (
+            <p>本次新增标签：{recentAddedTagsByAsset[selectedAsset.id].join('、')}</p>
+          ) : null}
         </div>
       </div>
     </section>

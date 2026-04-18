@@ -225,6 +225,11 @@ textarea {
   gap: 12px;
 }
 
+.recent-tag-row span {
+  background: rgba(34, 197, 94, 0.18);
+  color: #bbf7d0;
+}
+
 .field-block {
   display: flex;
   flex-direction: column;

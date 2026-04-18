@@ -11,12 +11,14 @@ export function GeneratePage({
   onScriptChange,
   onGenerationComplete,
   onAssetsChanged,
+  onTagsApplied,
 }: {
   script: string
   assets?: AssetRecord[]
   onScriptChange: (value: string) => void
   onGenerationComplete?: (result: GenerationResult) => void
   onAssetsChanged?: () => Promise<unknown>
+  onTagsApplied?: (assetId: string, addedTags: string[]) => void
 }) {
   const [candidates, setCandidates] = useState<Record<string, CandidateAsset[]>>({})
   const [timeline, setTimeline] = useState<TimelineClip[]>([])
@@ -125,12 +127,16 @@ export function GeneratePage({
 
     setApplyingAssetId(assetId)
     try {
+      const beforeAsset = assets.find(asset => asset.id === assetId)
+      const existingTags = beforeAsset?.contentTags ?? []
+      const addedTags = suggestedTags.filter(tag => tag.trim() && !existingTags.includes(tag))
       const result = await window.materialEditorApi.applyTagSuggestions({ assetId, suggestedTags })
       setTagApplyStatus(previous => ({
         ...previous,
         [assetId]: result.detail,
       }))
       if (result.success) {
+        onTagsApplied?.(assetId, addedTags)
         await onAssetsChanged?.()
       }
       return result.success

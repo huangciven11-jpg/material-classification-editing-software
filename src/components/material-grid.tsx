@@ -9,10 +9,12 @@ const categoryLabelMap: Record<AssetCategory, string> = {
 
 export function MaterialGrid({
   assets,
+  recentAddedTagsByAsset = {},
   selectedId,
   onSelect,
 }: {
   assets: AssetRecord[]
+  recentAddedTagsByAsset?: Record<string, string[]>
   selectedId: string | null
   onSelect: (asset: AssetRecord) => void
 }) {
@@ -40,6 +42,15 @@ export function MaterialGrid({
             <span>{asset.categoryConfidence ?? 'low'}</span>
             {asset.usageTags.concat(asset.visualTags).slice(0, 2).map(tag => <span key={tag}>{tag}</span>)}
           </div>
+          <div className="tag-row">
+            {asset.contentTags.slice(0, 3).map(tag => <span key={`${asset.id}-${tag}`}>{tag}</span>)}
+          </div>
+          {recentAddedTagsByAsset[asset.id]?.length ? (
+            <div className="tag-row recent-tag-row">
+              <span>新增标签</span>
+              {recentAddedTagsByAsset[asset.id].map(tag => <span key={`${asset.id}-recent-${tag}`}>{tag}</span>)}
+            </div>
+          ) : null}
           <p>{asset.categoryReason ?? '当前未记录分类原因'}</p>
         </article>
       ))}
