@@ -27,7 +27,7 @@ export function GeneratePage({
   const [isLoadingTagEnhancements, setIsLoadingTagEnhancements] = useState(false)
   const [isApplyingAllTags, setIsApplyingAllTags] = useState(false)
   const [selectionSummary, setSelectionSummary] = useState('')
-  const [enhancedTagDetail, setEnhancedTagDetail] = useState('专业版素材标签增强暂未接入，请先使用本地基础版分析。')
+  const [enhancedTagDetail, setEnhancedTagDetail] = useState('请先在设置页完成专业版 API 配置。')
   const [tagEnhancementSuggestions, setTagEnhancementSuggestions] = useState<Array<{
     assetId: string
     fileName: string
@@ -36,7 +36,7 @@ export function GeneratePage({
   }>>([])
   const [tagApplyStatus, setTagApplyStatus] = useState<Record<string, string>>({})
   const [applyingAssetId, setApplyingAssetId] = useState('')
-  const [copySuggestionDetail, setCopySuggestionDetail] = useState('专业版文案建议暂未接入，请先完成基础版本生成。')
+  const [copySuggestionDetail, setCopySuggestionDetail] = useState('请先在设置页完成专业版 API 配置。')
   const [copySuggestions, setCopySuggestions] = useState<string[]>([])
   const [copyActionDetail, setCopyActionDetail] = useState('')
   const [enhancementConfigured, setEnhancementConfigured] = useState(false)
@@ -58,13 +58,15 @@ export function GeneratePage({
         }
 
         setEnhancementConfigured(config.hasApiKey)
-        setEnhancedTagDetail(config.hasApiKey ? '已配置专业版 API，可获取标签增强建议。' : '专业版素材标签增强暂未接入，请先在设置页完成 API 配置。')
+        setEnhancedTagDetail(config.hasApiKey ? '已配置专业版 API，可获取标签增强建议。' : '请先在设置页完成专业版 API 配置。')
+        setCopySuggestionDetail(config.hasApiKey ? '已配置专业版 API，可获取文案建议。' : '请先在设置页完成专业版 API 配置。')
       } catch {
         if (disposed) {
           return
         }
 
-        setEnhancedTagDetail('当前无法获取专业版素材标签增强状态。')
+        setEnhancedTagDetail('获取失败，请检查 API 配置或网络状态。')
+        setCopySuggestionDetail('获取失败，请检查 API 配置或网络状态。')
         setEnhancementConfigured(false)
       }
     }
@@ -133,7 +135,7 @@ export function GeneratePage({
       const result = await window.materialEditorApi.applyTagSuggestions({ assetId, suggestedTags })
       setTagApplyStatus(previous => ({
         ...previous,
-        [assetId]: result.detail,
+        [assetId]: result.success ? '已应用到素材标签。' : result.detail,
       }))
       if (result.success) {
         onTagsApplied?.(assetId, addedTags)
@@ -191,9 +193,9 @@ export function GeneratePage({
 
     try {
       await navigator.clipboard.writeText(copySuggestions.join('\n'))
-      setCopyActionDetail('文案建议已复制到剪贴板。')
+      setCopyActionDetail('已复制到剪贴板。')
     } catch {
-      setCopyActionDetail('复制失败，请手动选择文案建议。')
+      setCopyActionDetail('复制失败，请手动复制。')
     }
   }
 
@@ -228,7 +230,7 @@ export function GeneratePage({
             {enhancementConfigured ? '已配置' : '未配置'}
           </span>
         </div>
-        <p>{enhancementConfigured ? '已检测到专业版 API 配置，可继续接入真实增强能力。' : '当前尚未完成专业版 API 配置，增强能力仍处于占位状态。'}</p>
+        <p>{enhancementConfigured ? '已配置专业版 API，可使用文案建议和标签增强能力。' : '未配置专业版 API，请先在设置页完成配置。'}</p>
         <div className="suggestion-block">
           <div className="status-row">
             <h3>标签增强建议</h3>
@@ -258,7 +260,7 @@ export function GeneratePage({
           ) : null}
         </div>
         <CopySuggestionPanel
-          detail={`文案建议：${copySuggestionDetail}`}
+          detail={copySuggestionDetail}
           suggestions={copySuggestions}
           actionDetail={copyActionDetail}
           isLoading={isLoadingCopySuggestions}

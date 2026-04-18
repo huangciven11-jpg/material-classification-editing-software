@@ -29,7 +29,7 @@ export function VersionPage({
   const [isLoadingCopySuggestions, setIsLoadingCopySuggestions] = useState(false)
   const [exportDetail, setExportDetail] = useState('')
   const [lastReplacedAssetLabel, setLastReplacedAssetLabel] = useState('')
-  const [copySuggestionDetail, setCopySuggestionDetail] = useState('可在结果页直接获取并复制文案建议。')
+  const [copySuggestionDetail, setCopySuggestionDetail] = useState('请先在设置页完成专业版 API 配置。')
   const [copySuggestions, setCopySuggestions] = useState<string[]>([])
   const [copyActionDetail, setCopyActionDetail] = useState('')
   const selectedClip = clips[selectedClipIndex] ?? null
@@ -79,9 +79,9 @@ export function VersionPage({
 
     try {
       await navigator.clipboard.writeText(copySuggestions.join('\n'))
-      setCopyActionDetail('文案建议已复制到剪贴板。')
+      setCopyActionDetail('已复制到剪贴板。')
     } catch {
-      setCopyActionDetail('复制失败，请手动选择文案建议。')
+      setCopyActionDetail('复制失败，请手动复制。')
     }
   }
 

@@ -294,7 +294,7 @@ function registerIpcHandlers() {
     if (!configured) {
       return {
         enabled: false,
-        detail: '专业版素材标签增强暂未接入，请先在设置页完成 API 配置。',
+        detail: '请先在设置页完成专业版 API 配置。',
         suggestions: [],
       }
     }
@@ -325,7 +325,7 @@ function registerIpcHandlers() {
 
       return {
         enabled: true,
-        detail: `已通过 ${config.provider} 生成 ${suggestions.length} 条标签增强建议。`,
+        detail: `已生成 ${suggestions.length} 条标签增强建议。`,
         suggestions: suggestions.map(item => ({
           assetId: item.assetId,
           fileName: input.assets.find(asset => asset.id === item.assetId)?.fileName || item.assetId,
@@ -333,10 +333,10 @@ function registerIpcHandlers() {
           reason: item.reason,
         })),
       }
-    } catch (error) {
+    } catch {
       return {
         enabled: true,
-        detail: error instanceof Error ? error.message : '标签增强建议获取失败。',
+        detail: '获取失败，请检查 API 配置或网络状态。',
         suggestions: [],
       }
     }
@@ -348,7 +348,7 @@ function registerIpcHandlers() {
     if (!configured) {
       return {
         enabled: false,
-        detail: '专业版文案建议暂未接入，请先在设置页完成 API 配置。',
+        detail: '请先在设置页完成专业版 API 配置。',
         suggestions: [],
       }
     }
@@ -370,13 +370,13 @@ function registerIpcHandlers() {
       })
       return {
         enabled: true,
-        detail: `已通过 ${config.provider} 生成 ${suggestions.length} 条文案建议。`,
+        detail: `已生成 ${suggestions.length} 条文案建议。`,
         suggestions,
       }
-    } catch (error) {
+    } catch {
       return {
         enabled: true,
-        detail: error instanceof Error ? error.message : '文案建议获取失败。',
+        detail: '获取失败，请检查 API 配置或网络状态。',
         suggestions: [],
       }
     }
